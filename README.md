@@ -1,6 +1,8 @@
 # socialista
 
-[Socialista](https://github.com/otobrglez/socialista) is a simple Go application that collects social metrics.
+[Socialista](https://github.com/otobrglez/socialista) collects social matrices.
+
+[![Build Status](https://travis-ci.org/otobrglez/socialista.svg)](https://travis-ci.org/otobrglez/socialista)
 
 ## Example output 
 
