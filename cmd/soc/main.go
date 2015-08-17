@@ -16,5 +16,5 @@ func init() {
 
 func main(){
 	fmt.Println("\\m/ socialista \\m/")
-	soc.GetStats("https://www.kickstarter.com/projects/elanlee/exploding-kittens")
+	soc.GetStats("https://www.kickstarter.com/projects/elanlee/exploding-kittens");
 }

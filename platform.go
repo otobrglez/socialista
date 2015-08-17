@@ -22,14 +22,16 @@ type Stat struct {
 
 func (platform Platform) getStatsFor(url string, stats chan <- Stat, errors chan *error) {
 	response, error := http.Get(fmt.Sprintf(platform.statsURL, url))
-	if error != nil { errors <- &error }
+	if error != nil {
+		errors <- &error
+	}
 
 	stat := platform.parseResponse(response)
 	stat.platform = &platform
 	stats <- stat
 }
 
-func GetStats(url string) {
+func GetStatsForPlatform(url string, selectedPlatform string) {
 	platforms := [...]Platform{
 		Platform{"twitter", "http://urls.api.twitter.com/1/urls/count.json?url=%s", func(response *http.Response) (stat Stat) {
 			var holder map[string]interface{}
@@ -63,14 +65,39 @@ func GetStats(url string) {
 				"share_count": fmt.Sprintf("%.f", jsonObject["share_count"].(float64)),
 			}}
 		}},
+		Platform{"pintarest", "http://api.pinterest.com/v1/urls/count.json?callback=&url=%s", func(response *http.Response) (stat Stat) {
+			body, _ := ioutil.ReadAll(response.Body)
+
+			fmt.Println("pintarest", body)
+
+			stat.data = nil;
+			return;
+		}},
 	}
 
 	errors := make(chan *error)
 	var stats chan Stat = make(chan Stat)
-	var platformsCount int = len(platforms)
+	var platformsCount int = 0
 
 	for _, platform := range platforms {
-		go platform.getStatsFor(url, stats, errors)
+		if selectedPlatform == "" {
+			go platform.getStatsFor(url, stats, errors)
+			platformsCount++
+		}   else {
+			var selectedPlatforms = strings.Split(selectedPlatform, ",")
+			var in = false
+			for _, iPlatform := range selectedPlatforms {
+				if strings.EqualFold(iPlatform, platform.name) {
+					in = true;
+				}
+			}
+
+			if in {
+				go platform.getStatsFor(url, stats, errors)
+				platformsCount++;
+			}
+		}
+
 	}
 
 	for {
@@ -87,4 +114,8 @@ func GetStats(url string) {
 			if platformsCount <= 0 { return }
 		}
 	}
+}
+
+func GetStats(url string) {
+	GetStatsForPlatform(url, "")
 }
