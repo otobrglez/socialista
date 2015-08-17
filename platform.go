@@ -65,12 +65,16 @@ func GetStatsForPlatform(url string, selectedPlatform string) {
 				"share_count": fmt.Sprintf("%.f", jsonObject["share_count"].(float64)),
 			}}
 		}},
-		Platform{"pintarest", "http://api.pinterest.com/v1/urls/count.json?callback=&url=%s", func(response *http.Response) (stat Stat) {
+		Platform{"pintarest", "http://api.pinterest.com/v1/urls/count.json?callback=call&url=%s", func(response *http.Response) (stat Stat) {
 			body, _ := ioutil.ReadAll(response.Body)
 
-			fmt.Println("pintarest", body)
+			var bodyAsString = string(body)
 
-			stat.data = nil;
+			if cIndex := strings.Index(bodyAsString, "count\":"); cIndex > -1 && body != nil {
+				countAsString := strings.TrimRight(bodyAsString[(cIndex+7):], "})")
+				stat.data = map[string]string{"count": countAsString}
+			}
+
 			return;
 		}},
 	}
@@ -86,6 +90,7 @@ func GetStatsForPlatform(url string, selectedPlatform string) {
 		}   else {
 			var selectedPlatforms = strings.Split(selectedPlatform, ",")
 			var in = false
+
 			for _, iPlatform := range selectedPlatforms {
 				if strings.EqualFold(iPlatform, platform.name) {
 					in = true;
@@ -97,7 +102,6 @@ func GetStatsForPlatform(url string, selectedPlatform string) {
 				platformsCount++;
 			}
 		}
-
 	}
 
 	for {

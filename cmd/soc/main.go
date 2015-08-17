@@ -1,7 +1,7 @@
 package main
 
 import (
-	soc "github.com/otobrglez/socialista"
+	socialista "github.com/otobrglez/socialista"
 	"fmt"
 	"runtime"
 )
@@ -16,5 +16,6 @@ func init() {
 
 func main(){
 	fmt.Println("\\m/ socialista \\m/")
-	soc.GetStats("https://www.kickstarter.com/projects/elanlee/exploding-kittens");
+	url := "https://www.kickstarter.com/projects/elanlee/exploding-kittens"
+	socialista.GetStats(url)
 }

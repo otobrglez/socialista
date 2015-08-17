@@ -9,12 +9,14 @@
 ```
 \m/ socialista \m/
 twitter
-	 share_count  = 18055
+	 share_count  = 18127
+pintarest
+	 count  = 298
 facebook
-	 like_count  = 73572
-	 comment_count  = 52407
-	 total_count  = 156261
-	 share_count  = 30282
+	 like_count  = 73872
+	 comment_count  = 53107
+	 total_count  = 157361
+	 share_count  = 30382
 linkedin
 	 share_count  = 480
 ```
@@ -23,8 +25,7 @@ linkedin
 - Facebook
 - Twitter
 - LinkedIn
-
-
+- Pintarest            
 
 # Author
 

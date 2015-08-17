@@ -18,4 +18,5 @@ func TestLinkedin(t *testing.T) {
 
 func TestPintarest(t *testing.T) {
 	GetStatsForPlatform("https://www.kickstarter.com/projects/elanlee/exploding-kittens", "pintarest")
+	GetStatsForPlatform("http://badasshelmetstore.com/10-futuristic-helmet-concepts-buy-today/", "pintarest")
 }
