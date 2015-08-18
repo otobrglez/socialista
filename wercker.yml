@@ -1,0 +1,23 @@
+box: monochromegane/golang-xc
+build:
+  steps:
+    - setup-go-workspace
+    - script:
+        name: go get
+        code: |
+          go version
+          godep restore
+    - script:
+        name: go test
+        code: |
+          godep go test ./...
+    - script:
+        name: goxc build & archive
+        code: |
+          GODEPPATH=`godep path`
+          export GOPATH="$GODEPPATH:$GOPATH"
+          goxc -tasks='xc archive' -bc 'linux windows darwin' -d $WERCKER_OUTPUT_DIR/ -resources-include='README*' -n pt
+    - script:
+        name: output release tag
+        code: |
+          git describe --tags --exact --match 'v*' > $WERCKER_OUTPUT_DIR/.release_tag || true
